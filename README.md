@@ -12,6 +12,19 @@ history are **encrypted at rest with AES-256-GCM**.
 > storage so the model can process them. Review fal.ai's Terms & Privacy before
 > uploading images you don't own the rights to.
 
+## Screenshots
+
+| Generate (light) | Generate (dark) |
+|:---:|:---:|
+| ![Generate tab, light theme](screenshots/generate-light.png) | ![Generate tab, dark theme](screenshots/generate-dark.png) |
+
+Built-in **Help → Parameter Guide** explains every option:
+
+![Parameter Guide help window](screenshots/help-parameter-guide.png)
+
+More views in [`screenshots/`](screenshots/): high-contrast theme, Settings, and
+the Set API Key dialog.
+
 ## Documentation index
 
 | Document | What's inside |
