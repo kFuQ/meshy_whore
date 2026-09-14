@@ -24,7 +24,7 @@ from ..schema import (
 )
 from ..store import SecureStore
 from ..theme import THEME_NAMES, get_palette, resolve_theme
-from ..timeutils import format_pacific, now_utc
+from ..timeutils import format_local, now_utc
 from ..worker import GenerationJob, WorkerEvent
 from .images import load_thumbnail
 from .styling import BASE_FONT, MONO_FONT, SMALL_FONT, apply_palette
@@ -181,7 +181,7 @@ and animation.
 ## Privacy & security
 • Your API key and job history are encrypted at rest with AES-256-GCM.
 • The app talks only to fal.ai, and only to run the generation you request.
-• All times are shown in US Pacific time.
+• All times are shown in your local time zone.
 
 ## Links
 fal.ai model page: https://fal.ai/models/meshy/v7/multi-image-to-3d
@@ -576,7 +576,7 @@ class MeshyStudioApp:
 
         cols = ("when", "status", "request", "files")
         self.tree = ttk.Treeview(t, columns=cols, show="headings", selectmode="browse")
-        for c, txt, w in (("when", "When (Pacific)", 220), ("status", "Status", 100),
+        for c, txt, w in (("when", "When (local)", 220), ("status", "Status", 100),
                           ("request", "Request ID", 220), ("files", "Files", 80)):
             self.tree.heading(c, text=txt)
             self.tree.column(c, width=w, anchor="w")
@@ -637,7 +637,7 @@ class MeshyStudioApp:
             "• Your API key and job history are encrypted at rest with AES-256-GCM.\n"
             "• Images are uploaded to fal.ai storage, then reconstructed into a\n"
             "  textured, game-ready 3D model (GLB/FBX/OBJ/USDZ and more).\n"
-            "• All times are shown in US Pacific time.\n\n"
+            "• All times are shown in your local time zone.\n\n"
             "This tool talks only to fal.ai. Review fal.ai's Terms of Service and\n"
             "Privacy Policy before uploading images you do not own the rights to."
         )
@@ -975,7 +975,7 @@ class MeshyStudioApp:
             from datetime import datetime
 
             try:
-                when = format_pacific(datetime.fromisoformat(entry.get("when")))
+                when = format_local(datetime.fromisoformat(entry.get("when")))
             except Exception:
                 when = entry.get("when", "?")
             self.tree.insert("", "end", iid=str(idx), values=(
@@ -1192,7 +1192,7 @@ class MeshyStudioApp:
             messagebox.showerror(config.APP_NAME, f"Could not open: {exc}")
 
     def _log(self, msg: str) -> None:
-        ts = format_pacific(now_utc()).split(", ")[-1]
+        ts = format_local(now_utc()).split(", ")[-1]
         self.log.configure(state="normal")
         self.log.insert("end", f"[{ts}] {msg}\n")
         self.log.see("end")
@@ -1204,7 +1204,7 @@ class MeshyStudioApp:
         self.log.configure(state="disabled")
 
     def _tick_clock(self) -> None:
-        self.var_clock.set("🕒 " + format_pacific(now_utc()))
+        self.var_clock.set("🕒 " + format_local(now_utc()))
         self.root.after(1000, self._tick_clock)
 
     def _startup_checks(self) -> None:

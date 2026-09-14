@@ -2,7 +2,7 @@
 
 All notable changes to Meshy Studio are documented here. This project adheres
 to [Semantic Versioning](https://semver.org/) and the
-[Keep a Changelog](https://keepachangelog.com/) format. Dates are US Pacific.
+[Keep a Changelog](https://keepachangelog.com/) format.
 
 ## [1.0.0] — 2026-09-14
 
@@ -25,7 +25,7 @@ to [Semantic Versioning](https://semver.org/) and the
 - Global theming: light / dark / high-contrast + system auto-detect, driven by
   a single colour-token set (no hard-coded colours). ARIA-equivalent tooltips
   on every parameter.
-- All timestamps displayed in US Pacific time.
+- All timestamps displayed in the user's local time zone.
 
 ### Security
 - API key and job history **encrypted at rest with AES-256-GCM**; master key

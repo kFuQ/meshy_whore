@@ -43,7 +43,7 @@ history are **encrypted at rest with AES-256-GCM**.
 - 💾 **Auto-download** — every output (GLB / FBX / OBJ / USDZ / textures /
   animations) is fetched to a folder you choose; open it in one click.
 - 🔒 **Encrypted at rest** — API key and history sealed with AES-256-GCM.
-- 🕒 **Pacific time** — all timestamps display in US Pacific time.
+- 🕒 **Local time** — all timestamps display in your machine's local time zone.
 
 ## Requirements
 
