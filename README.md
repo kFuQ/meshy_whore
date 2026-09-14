@@ -32,6 +32,9 @@ history are **encrypted at rest with AES-256-GCM**.
   automatically to match the API's rules.
 - 🧵 **Responsive UI** — generation runs on a background thread with live status
   and a cancel button; the window never freezes.
+- 🧭 **Native menu bar** — **File** (set API key, set output directory, open
+  output folder), **View** (theme), and **Help** (Getting Started, a full
+  Parameter Guide, and how to get an API key).
 - 🌓 **Global theming** — light, dark, and high-contrast palettes (plus
   "system" auto-detect). All colours come from a single token set — no
   hard-coded colours in the UI.
@@ -68,13 +71,17 @@ python -m meshy_studio
 
 Then:
 
-1. Open **Settings** → paste your fal.ai API key → **Save settings** (it's
-   encrypted on disk). You can also set `FAL_KEY` in your environment or a
-   `.env` file (see [.env.example](.env.example)).
-2. Back on **Generate**, click **Add images…** and pick 1–4 views of one object.
-3. Adjust parameters as desired and click **Generate 3D Model**.
-4. Watch progress; when it finishes, outputs are listed and (if auto-download is
+1. Set your fal.ai API key via **File → Set API Key…** (or the **Settings** tab).
+   It's encrypted on disk. You can alternatively set the `FAL_KEY` environment
+   variable before launching.
+2. Optionally choose where models are saved via **File → Set Output Directory…**.
+3. Back on **Generate**, click **Add images…** and pick 1–4 views of one object.
+4. Adjust parameters as desired and click **Generate 3D Model**.
+5. Watch progress; when it finishes, outputs are listed and (if auto-download is
    on) saved to your output folder. Click **Open output folder**.
+
+New to it? Use the **Help** menu — *Getting Started*, a full *Parameter Guide*,
+and *How to Get an API Key*.
 
 ## Configuration & data location
 
@@ -84,7 +91,7 @@ Then:
 | AES master key | `master.key` in the data dir (`0600`, auto-generated) |
 | Outputs | `~/MeshyStudioOutputs/` (configurable in Settings) |
 
-Environment overrides (see [.env.example](.env.example)):
+Optional environment overrides:
 
 - `FAL_KEY` — API key for the session (takes precedence over the stored key).
 - `MESHY_MASTER_KEY` — passphrase to derive the AES-256-GCM master key (makes

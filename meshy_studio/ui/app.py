@@ -47,6 +47,159 @@ PARAM_HELP = {
     "enable_safety_checker": "Check input images for safety before processing.",
 }
 
+# Longer, menu-facing explanations of each parameter (Help → Parameter Guide).
+PARAM_GUIDE = [
+    ("Input images",
+     "Add 1 to 4 photos of the SAME object from different angles (front, side, "
+     "back…). More consistent angles generally yield a better model. Supported: "
+     "JPG, PNG, AVIF, HEIC/HEIF, up to 25 MB each."),
+    ("Topology",
+     "How the mesh is wired. 'triangle' gives detailed geometry and is the safe "
+     "default; 'quad' produces cleaner edge loops for smooth surfaces and is "
+     "friendlier to sculpting/subdivision in DCC tools."),
+    ("Target polycount",
+     "Roughly how many polygons you want (100–300,000; default 30,000). The "
+     "actual count varies with the object's complexity. Lower = lighter for "
+     "real-time/games; higher = more detail. Ignored when Remesh is off."),
+    ("Symmetry mode",
+     "'auto' lets the model decide; 'on' enforces left/right symmetry (good for "
+     "characters and symmetric props); 'off' preserves asymmetric detail."),
+    ("Remesh",
+     "On (default) produces clean topology honouring the topology + polycount "
+     "settings. Turn it OFF to get the raw triangular mesh straight from "
+     "reconstruction — those two settings are then ignored."),
+    ("Generate textures",
+     "On (default) paints the model with colour textures. Turn off for an "
+     "untextured mesh (faster/cheaper) when you only need geometry."),
+    ("Generate PBR maps",
+     "Adds metallic, roughness and normal maps alongside base colour for "
+     "physically-based rendering. Requires 'Generate textures'."),
+    ("Pose mode",
+     "For humanoids: force an A-pose or T-pose (handy for rigging), or leave "
+     "'(none)' to keep the pose implied by your images."),
+    ("Texture prompt",
+     "Optional text to steer the look of the textures (e.g. 'weathered bronze'). "
+     "Requires 'Generate textures'."),
+    ("Texture image URL",
+     "Optional URL of a 2D image to guide texturing/style. Requires "
+     "'Generate textures'."),
+    ("Auto-rig (humanoid)",
+     "Automatically rigs a humanoid character and includes basic walk/run "
+     "animations. Works best on characters with clearly defined limbs."),
+    ("Rig height (m)",
+     "Approximate real-world height of the character in metres (default 1.7). "
+     "Only used when auto-rig is on."),
+    ("Apply animation preset",
+     "Applies one of Meshy's animation presets to the rigged model. Requires "
+     "auto-rig."),
+    ("Animation action ID",
+     "Which animation preset to apply (0–696; 0 = Idle). See Meshy's animation "
+     "library for the full list. Only used when 'Apply animation preset' is on."),
+    ("Safety checker",
+     "On by default: input images are screened for safety before processing."),
+]
+
+_HELP_GETTING_STARTED = """# Getting Started
+
+Meshy Studio turns photos of an object into a textured 3D model using fal.ai's
+Meshy v7 model.
+
+## 1. Add your API key
+Open File → Set API Key… (or the Settings tab) and paste your fal.ai key.
+It is encrypted on this device with AES-256-GCM. Don't have one yet? See
+Help → How to Get an API Key.
+
+## 2. Choose an output folder
+File → Set Output Directory… picks where finished models are saved. By default
+that's a "MeshyStudioOutputs" folder in your home directory.
+
+## 3. Add 1–4 images
+On the Generate tab, click "Add images…" and select up to four photos of the
+SAME object from different angles.
+
+## 4. Set parameters (optional)
+The defaults produce a textured, ~30k-polygon model. Hover the ⓘ icons for a
+quick note on each option, or read Help → Parameter Guide for details.
+
+## 5. Generate
+Click "Generate 3D Model". Progress appears in the Status panel and you can
+Cancel at any time. When it finishes, every output file (GLB, FBX, OBJ, USDZ,
+textures, animations) is listed and — if auto-download is on — saved to your
+output folder. Click "Open output folder" to find them.
+
+## Where things are saved
+Your encrypted key and history live in the app data directory (shown at the
+bottom of the Settings tab). Models are saved to your chosen output folder.
+
+## Note on privacy
+Images you add are uploaded to fal.ai for processing. Only upload images you
+have the rights to use.
+"""
+
+_HELP_API_KEY = """# How to Get a fal.ai API Key
+
+You need a fal.ai account and an API key to generate models.
+
+## Steps
+## 1. Create an account
+Go to https://fal.ai and sign up (or log in).
+
+## 2. Open the API Keys page
+Visit https://fal.ai/dashboard/keys — you can also reach it from your fal.ai
+dashboard under "API Keys".
+
+## 3. Create a key
+Click "Add key" / "Create key", give it a name, and copy the value shown.
+You usually can't view it again later, so copy it now.
+
+## 4. Add billing if required
+Generating 3D models consumes fal.ai credits. Add a payment method / credits in
+your fal.ai billing settings if prompted.
+
+## 5. Paste it into Meshy Studio
+File → Set API Key… → paste → Save. It's stored encrypted on this device.
+
+## Advanced
+You can instead set a FAL_KEY environment variable before launching the app;
+if present, it's used for that session and takes precedence over the stored key.
+
+## Keep it secret
+Treat the key like a password. Meshy Studio never logs it and never stores it in
+your job history. If a key leaks, revoke it on the fal.ai keys page and create a
+new one.
+"""
+
+_HELP_ABOUT = f"""# {config.APP_NAME} v{config.APP_VERSION}
+
+A clean desktop client for the fal.ai Meshy v7 multi-image-to-3D model.
+
+## What it does
+Reconstructs a textured, game-ready 3D model from 1–4 images of one object,
+with control over topology, polycount, symmetry, textures/PBR, pose, rigging
+and animation.
+
+## Privacy & security
+• Your API key and job history are encrypted at rest with AES-256-GCM.
+• The app talks only to fal.ai, and only to run the generation you request.
+• All times are shown in US Pacific time.
+
+## Links
+fal.ai model page: https://fal.ai/models/meshy/v7/multi-image-to-3d
+fal.ai Terms & Privacy: https://fal.ai/legal/terms-of-service
+
+Review fal.ai's Terms of Service and Privacy Policy before uploading images you
+do not own the rights to.
+"""
+
+
+def _build_parameter_guide() -> str:
+    parts = ["# Parameter Guide", ""]
+    for name, desc in PARAM_GUIDE:
+        parts.append(f"## {name}")
+        parts.append(desc)
+        parts.append("")
+    return "\n".join(parts)
+
 
 class MeshyStudioApp:
     def __init__(self, root: tk.Tk):
@@ -119,6 +272,7 @@ class MeshyStudioApp:
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
 
+        self._build_menubar()
         self._build_header()
 
         self.notebook = ttk.Notebook(self.root)
@@ -160,6 +314,56 @@ class MeshyStudioApp:
                                  values=("system",) + THEME_NAMES)
         theme_box.pack(side="left")
         theme_box.bind("<<ComboboxSelected>>", lambda *_: self.apply_theme(self.var_theme.get()))
+
+    # ---- Menu bar ----
+    def _build_menubar(self) -> None:
+        self.menubar = tk.Menu(self.root)
+
+        # File menu.
+        self.menu_file = tk.Menu(self.menubar, tearoff=0)
+        self.menu_file.add_command(label="Set API Key…", command=self.on_menu_set_api_key)
+        self.menu_file.add_command(label="Set Output Directory…", command=self.on_menu_set_output_dir)
+        self.menu_file.add_command(label="Open Output Folder", command=self.on_open_output_folder)
+        self.menu_file.add_separator()
+        self.menu_file.add_command(label="Exit", command=self.root.destroy)
+        self.menubar.add_cascade(label="File", menu=self.menu_file)
+
+        # View menu (theme).
+        self.menu_view = tk.Menu(self.menubar, tearoff=0)
+        for label, value in (("System", "system"), ("Light", "light"),
+                             ("Dark", "dark"), ("High contrast", "high-contrast")):
+            self.menu_view.add_radiobutton(
+                label=label, value=value, variable=self.var_theme,
+                command=lambda v=value: self.apply_theme(v))
+        self.menubar.add_cascade(label="View", menu=self.menu_view)
+
+        # Help menu.
+        self.menu_help = tk.Menu(self.menubar, tearoff=0)
+        self.menu_help.add_command(label="Getting Started", command=self.show_help_getting_started)
+        self.menu_help.add_command(label="Parameter Guide", command=self.show_help_parameters)
+        self.menu_help.add_command(label="How to Get an API Key", command=self.show_help_api_key)
+        self.menu_help.add_separator()
+        self.menu_help.add_command(
+            label="fal.ai Model Page",
+            command=lambda: webbrowser.open("https://fal.ai/models/meshy/v7/multi-image-to-3d"))
+        self.menu_help.add_command(label="About Meshy Studio", command=self.show_about)
+        self.menubar.add_cascade(label="Help", menu=self.menu_help)
+
+        self.root.config(menu=self.menubar)
+        self._apply_menu_colors()
+
+    def _apply_menu_colors(self) -> None:
+        p = self.palette
+        opts = dict(background=p.surface, foreground=p.fg,
+                    activebackground=p.accent, activeforeground=p.accent_fg,
+                    borderwidth=0)
+        for m in (getattr(self, "menubar", None), getattr(self, "menu_file", None),
+                  getattr(self, "menu_view", None), getattr(self, "menu_help", None)):
+            if m is not None:
+                try:
+                    m.configure(**opts)
+                except tk.TclError:
+                    pass
 
     # ---- Generate tab ----
     def _build_generate_tab(self) -> None:
@@ -473,6 +677,7 @@ class MeshyStudioApp:
                 sf.set_bg(p.surface if sf is getattr(self, "downloads_frame", None) else p.bg)
         for tip in self._tooltips:
             tip.update_colors(p.surface_alt, p.fg)
+        self._apply_menu_colors()
 
         if persist:
             self.settings["theme"] = name
@@ -830,6 +1035,141 @@ class MeshyStudioApp:
         except Exception as exc:  # noqa: BLE001
             messagebox.showerror(config.APP_NAME, f"Could not save settings: {exc}")
             return False
+
+    # ------------------------------------------------------------------
+    # Menu: File actions
+    # ------------------------------------------------------------------
+    def on_menu_set_api_key(self) -> None:
+        """Modal dialog to enter and store the fal.ai API key (encrypted)."""
+        win = self._themed_toplevel("Set fal.ai API Key", width=520)
+        frame = ttk.Frame(win, style="Card.TFrame", padding=16)
+        frame.pack(fill="both", expand=True)
+        frame.columnconfigure(0, weight=1)
+
+        ttk.Label(frame, text="fal.ai API key", style="CardH2.TLabel").grid(
+            row=0, column=0, sticky="w")
+        ttk.Label(frame, style="CardMuted.TLabel",
+                  text="Stored encrypted (AES-256-GCM) on this device and sent only to fal.ai."
+                  ).grid(row=1, column=0, sticky="w", pady=(2, 10))
+
+        key_var = tk.StringVar(value=self.var_apikey.get())
+        show_var = tk.BooleanVar(value=False)
+        entry = ttk.Entry(frame, textvariable=key_var, show="•", width=52)
+        entry.grid(row=2, column=0, sticky="ew")
+        entry.focus_set()
+
+        def toggle():
+            entry.configure(show="" if show_var.get() else "•")
+
+        ttk.Checkbutton(frame, text="Show key", variable=show_var,
+                        style="Card.TCheckbutton", command=toggle).grid(
+            row=3, column=0, sticky="w", pady=(6, 4))
+
+        link = ttk.Button(frame, text="Get a key at fal.ai/dashboard/keys",
+                          style="Ghost.TButton",
+                          command=lambda: webbrowser.open("https://fal.ai/dashboard/keys"))
+        link.grid(row=4, column=0, sticky="w", pady=(0, 12))
+
+        btns = ttk.Frame(frame, style="Card.TFrame")
+        btns.grid(row=5, column=0, sticky="e")
+
+        def save():
+            key = key_var.get().strip()
+            self.var_apikey.set(key)
+            self.settings["api_key"] = key
+            if self._safe_save_settings():
+                self.var_status.set("API key saved (encrypted).")
+                win.destroy()
+
+        ttk.Button(btns, text="Cancel", command=win.destroy).pack(side="right", padx=(8, 0))
+        ttk.Button(btns, text="Save", style="Accent.TButton", command=save).pack(side="right")
+        win.bind("<Return>", lambda *_: save())
+        win.bind("<Escape>", lambda *_: win.destroy())
+
+    def on_menu_set_output_dir(self) -> None:
+        d = filedialog.askdirectory(
+            title="Choose output folder",
+            initialdir=self.var_output_dir.get() or str(config.DEFAULT_OUTPUT_DIR))
+        if d:
+            self.var_output_dir.set(d)
+            self.settings["output_dir"] = d
+            if self._safe_save_settings():
+                self.var_status.set(f"Output folder set to {d}")
+
+    # ------------------------------------------------------------------
+    # Menu: Help windows
+    # ------------------------------------------------------------------
+    def _themed_toplevel(self, title: str, width: int = 640, height: int | None = None) -> tk.Toplevel:
+        win = tk.Toplevel(self.root)
+        win.title(title)
+        win.configure(background=self.palette.bg)
+        win.transient(self.root)
+        win.resizable(True, True)
+        if height:
+            win.geometry(f"{width}x{height}")
+        else:
+            win.geometry(f"{width}x{min(560, width)}")
+        # Centre over the main window.
+        self.root.update_idletasks()
+        x = self.root.winfo_rootx() + max(0, (self.root.winfo_width() - width) // 2)
+        y = self.root.winfo_rooty() + 80
+        win.geometry(f"+{x}+{y}")
+        try:
+            win.grab_set()
+        except tk.TclError:
+            pass
+        return win
+
+    def _show_text_window(self, title: str, content: str) -> None:
+        win = self._themed_toplevel(title, width=680, height=560)
+        p = self.palette
+        outer = ttk.Frame(win, style="TFrame", padding=12)
+        outer.pack(fill="both", expand=True)
+        outer.rowconfigure(0, weight=1)
+        outer.columnconfigure(0, weight=1)
+
+        text = tk.Text(outer, wrap="word", relief="flat", borderwidth=0,
+                       padx=14, pady=12, font=BASE_FONT,
+                       background=p.surface, foreground=p.fg,
+                       insertbackground=p.fg, highlightthickness=0)
+        sb = ttk.Scrollbar(outer, orient="vertical", command=text.yview,
+                           style="Vertical.TScrollbar")
+        text.configure(yscrollcommand=sb.set)
+        text.grid(row=0, column=0, sticky="nsew")
+        sb.grid(row=0, column=1, sticky="ns")
+
+        # Simple markup: lines ending with a tab-less '::' heading marker.
+        text.tag_configure("h1", font=(BASE_FONT[0], 15, "bold"), foreground=p.fg,
+                            spacing1=4, spacing3=8)
+        text.tag_configure("h2", font=(BASE_FONT[0], 11, "bold"), foreground=p.accent,
+                            spacing1=10, spacing3=4)
+        text.tag_configure("body", foreground=p.fg, spacing3=3, lmargin1=4, lmargin2=4)
+        for line in content.split("\n"):
+            if line.startswith("# "):
+                text.insert("end", line[2:] + "\n", "h1")
+            elif line.startswith("## "):
+                text.insert("end", line[3:] + "\n", "h2")
+            else:
+                text.insert("end", line + "\n", "body")
+        text.configure(state="disabled")
+
+        bar = ttk.Frame(win, style="TFrame", padding=(12, 0, 12, 12))
+        bar.pack(fill="x")
+        ttk.Button(bar, text="Close", style="Accent.TButton",
+                   command=win.destroy).pack(side="right")
+        win.bind("<Escape>", lambda *_: win.destroy())
+
+    def show_help_getting_started(self) -> None:
+        self._show_text_window("Getting Started", _HELP_GETTING_STARTED)
+
+    def show_help_parameters(self) -> None:
+        self._show_text_window("Parameter Guide", _build_parameter_guide())
+
+    def show_help_api_key(self) -> None:
+        self._show_text_window("How to Get an API Key", _HELP_API_KEY)
+
+    def show_about(self) -> None:
+        self._show_text_window("About Meshy Studio", _HELP_ABOUT)
 
     # ------------------------------------------------------------------
     # Misc helpers

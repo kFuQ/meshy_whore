@@ -14,6 +14,9 @@ to [Semantic Versioning](https://semver.org/) and the
   remesh, textures, PBR maps, pose mode, texture prompt / image URL,
   auto-rigging, rig height, animation preset + action ID, safety checker.
   Dependent options auto-enable/disable per the API's rules.
+- Native menu bar: **File** (Set API Key…, Set Output Directory…, Open Output
+  Folder, Exit), **View** (theme), and **Help** (Getting Started, Parameter
+  Guide, How to Get an API Key, About) with themed in-app help windows.
 - Background generation worker (upload → submit → poll → download) that keeps
   the UI responsive, with live status log and cancellation.
 - Result panel with preview thumbnail, per-file outputs, and auto-download of

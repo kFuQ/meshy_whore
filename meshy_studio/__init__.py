@@ -8,14 +8,6 @@ __all__ = ["APP_NAME", "APP_VERSION", "run"]
 
 def run() -> int:
     """Launch the desktop application. Returns a process exit code."""
-    # Optional: load FAL_KEY (and friends) from a local .env file.
-    try:
-        from dotenv import load_dotenv
-
-        load_dotenv()
-    except Exception:
-        pass
-
     try:
         import tkinter as tk
     except Exception as exc:  # pragma: no cover

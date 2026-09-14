@@ -6,4 +6,3 @@
 fal-client>=0.5.0        # fal.ai API client (Meshy v7 endpoint)
 cryptography>=42.0.4     # AES-256-GCM at rest; >=42.0.4 avoids CVE-2024-26130
 Pillow>=10.3.0           # optional thumbnails; >=10.3.0 avoids older image-parsing CVEs
-python-dotenv>=1.0.0     # optional: load FAL_KEY from a local .env file
